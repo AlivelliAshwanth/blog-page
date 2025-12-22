@@ -13,7 +13,8 @@ const samplePosts = [
     publishedAt: '2024-01-15',
     author: 'Dr. Sarah Chen',
     tags: ['AI', 'Machine Learning', 'Threat Detection'],
-    featured: true
+    featured: true,
+    mainImage: { asset: { url: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=500&h=300&fit=crop' }, alt: 'AI Threat Detection' }
   },
   {
     _id: '2', 
@@ -24,7 +25,8 @@ const samplePosts = [
     readTime: '8 min read',
     publishedAt: '2024-01-10',
     author: 'Marcus Rodriguez',
-    tags: ['Zero Trust', 'Architecture', 'Authentication']
+    tags: ['Zero Trust', 'Architecture', 'Authentication'],
+    mainImage: { asset: { url: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=500&h=300&fit=crop' }, alt: 'Zero Trust Architecture' }
   },
   {
     _id: '3',
@@ -35,7 +37,8 @@ const samplePosts = [
     readTime: '6 min read',
     publishedAt: '2024-01-05',
     author: 'Jennifer Kim',
-    tags: ['Cloud', 'AWS', 'Security']
+    tags: ['Cloud', 'AWS', 'Security'],
+    mainImage: { asset: { url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop' }, alt: 'Cloud Security' }
   },
   {
     _id: '4',
@@ -46,7 +49,8 @@ const samplePosts = [
     readTime: '7 min read',
     publishedAt: '2024-01-01',
     author: 'Alex Thompson',
-    tags: ['Automation', 'SOAR', 'Incident Response']
+    tags: ['Automation', 'SOAR', 'Incident Response'],
+    mainImage: { asset: { url: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500&h=300&fit=crop' }, alt: 'Incident Response Automation' }
   },
   {
     _id: '5',
@@ -57,7 +61,8 @@ const samplePosts = [
     readTime: '9 min read',
     publishedAt: '2023-12-28',
     author: 'David Park',
-    tags: ['Ransomware', 'Backup', 'Recovery']
+    tags: ['Ransomware', 'Backup', 'Recovery'],
+    mainImage: { asset: { url: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=500&h=300&fit=crop' }, alt: 'Ransomware Protection' }
   },
   {
     _id: '6',
@@ -68,11 +73,39 @@ const samplePosts = [
     readTime: '10 min read',
     publishedAt: '2023-12-25',
     author: 'Lisa Wang',
-    tags: ['Compliance', 'GDPR', 'SOX']
+    tags: ['Compliance', 'GDPR', 'SOX'],
+    mainImage: { asset: { url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=300&fit=crop' }, alt: 'Security Compliance' }
   }
 ];
 
 const categories = ['All', 'AI Security', 'Architecture', 'Cloud Security', 'Automation', 'Threat Protection', 'Compliance'];
+
+// Function to get relevant placeholder image based on category or title
+const getPlaceholderImage = (post) => {
+  const category = post.category?.toLowerCase() || '';
+  const title = post.title?.toLowerCase() || '';
+  
+  if (category.includes('ai') || title.includes('ai') || title.includes('artificial intelligence')) {
+    return 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=500&h=300&fit=crop';
+  }
+  if (category.includes('cloud') || title.includes('cloud')) {
+    return 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500&h=300&fit=crop';
+  }
+  if (category.includes('architecture') || title.includes('zero trust') || title.includes('architecture')) {
+    return 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=500&h=300&fit=crop';
+  }
+  if (category.includes('automation') || title.includes('automation') || title.includes('incident')) {
+    return 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=500&h=300&fit=crop';
+  }
+  if (category.includes('ransomware') || title.includes('ransomware') || title.includes('malware')) {
+    return 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=500&h=300&fit=crop';
+  }
+  if (category.includes('compliance') || title.includes('compliance') || title.includes('regulation')) {
+    return 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=300&fit=crop';
+  }
+  // Default cybersecurity image
+  return 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=500&h=300&fit=crop';
+};
 
 export default function SimpleBlogList() {
   const [posts, setPosts] = useState([]);
@@ -82,6 +115,51 @@ export default function SimpleBlogList() {
   const [selectedCategory, setSelectedCategory] = useState('All');
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState('newest');
+  const [email, setEmail] = useState('');
+  const [subscribed, setSubscribed] = useState(false);
+  const [showEmails, setShowEmails] = useState(false);
+  const [debugInfo, setDebugInfo] = useState('');
+  
+  const testSanityConnection = async () => {
+    try {
+      setDebugInfo('Testing Sanity connection...');
+      
+      // Test 1: Check if we can connect at all
+      const basicQuery = `*[_type == "post"]{ _id }`;
+      const basicResult = await client.fetch(basicQuery);
+      
+      // Test 2: Check published posts
+      const publishedQuery = `*[_type == "post" && !(_id in path("drafts.**"))]{ _id, title, publishedAt }`;
+      const publishedResult = await client.fetch(publishedQuery);
+      
+      // Test 3: Check draft posts
+      const draftQuery = `*[_type == "post" && _id in path("drafts.**")]{ _id, title }`;
+      const draftResult = await client.fetch(draftQuery);
+      
+      setDebugInfo(`✅ Connection successful!
+
+Total posts: ${basicResult.length}
+Published posts: ${publishedResult.length}
+Draft posts: ${draftResult.length}
+
+Published posts:
+${JSON.stringify(publishedResult, null, 2)}
+
+${publishedResult.length === 0 ? '⚠️ No published posts found! Make sure to publish your posts in Sanity Studio.' : ''}`);
+    } catch (error) {
+      setDebugInfo(`❌ Connection Error: ${error.message}
+
+Possible solutions:
+1. Make sure your Sanity dataset is public OR add a token
+2. Check if posts are published (not drafts)
+3. Verify project ID: x9c1zj30
+4. Check if Sanity Studio is accessible`);
+    }
+  };
+  
+  const getStoredEmails = () => {
+    return JSON.parse(localStorage.getItem('subscribedEmails') || '[]');
+  };
 
   useEffect(() => {
     const fetchPosts = async () => {
@@ -91,6 +169,11 @@ export default function SimpleBlogList() {
           title,
           slug,
           excerpt,
+          category,
+          readTime,
+          author,
+          tags,
+          featured,
           publishedAt,
           mainImage{
             asset->{
@@ -100,17 +183,26 @@ export default function SimpleBlogList() {
             alt
           }
         }`;
+        
+        console.log('Fetching posts from Sanity...');
         const data = await client.fetch(query);
-        if (data.length > 0) {
+        console.log('Sanity response:', data);
+        console.log('Number of posts fetched:', data?.length || 0);
+        
+        if (data && data.length > 0) {
+          console.log('✅ Using Sanity data - Found', data.length, 'posts');
           setPosts(data);
           setFilteredPosts(data);
+          setUseSample(false);
         } else {
+          console.log('⚠️ No posts found in Sanity, using sample posts');
           setPosts(samplePosts);
           setFilteredPosts(samplePosts);
           setUseSample(true);
         }
       } catch (error) {
-        console.error('Error fetching posts:', error);
+        console.error('❌ Error fetching posts from Sanity:', error);
+        console.log('Falling back to sample posts due to error');
         setPosts(samplePosts);
         setFilteredPosts(samplePosts);
         setUseSample(true);
@@ -123,27 +215,28 @@ export default function SimpleBlogList() {
   }, []);
 
   useEffect(() => {
-    let filtered = posts;
+    let filtered = [...posts];
     
     if (selectedCategory !== 'All') {
       filtered = filtered.filter(post => post.category === selectedCategory);
     }
     
     if (searchTerm) {
-      filtered = filtered.filter(post => 
-        post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        post.excerpt.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (post.tags && post.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase())))
-      );
+      filtered = filtered.filter(post => {
+        const searchLower = searchTerm.toLowerCase();
+        return (
+          (post.title && typeof post.title === 'string' && post.title.toLowerCase().includes(searchLower)) ||
+          (post.excerpt && typeof post.excerpt === 'string' && post.excerpt.toLowerCase().includes(searchLower)) ||
+          (post.category && typeof post.category === 'string' && post.category.toLowerCase().includes(searchLower))
+        );
+      });
     }
 
     // Sort posts
     if (sortBy === 'newest') {
-      filtered = filtered.sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+      filtered = [...filtered].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt));
     } else if (sortBy === 'oldest') {
-      filtered = filtered.sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt));
-    } else if (sortBy === 'popular') {
-      filtered = filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+      filtered = [...filtered].sort((a, b) => new Date(a.publishedAt) - new Date(b.publishedAt));
     }
     
     setFilteredPosts(filtered);
@@ -167,7 +260,7 @@ export default function SimpleBlogList() {
       <div className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-12 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="container mx-auto px-6 relative z-10">
-          <div className="text-center mb-16">
+          <div className="text-center mb-0">
             <div className="inline-block">
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider">
                 AI & CYBERSECURITY INSIGHTS
@@ -175,7 +268,7 @@ export default function SimpleBlogList() {
             </div>
             <h1 className="text-4xl md:text-5xl font-black mb-6 leading-none mt-4">
               <span className="text-gray-900 block">CYGNENOIR CYBER</span>
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 animate-gradient-x">BLOGS</span>
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 animate-gradient-x" style={{color: '#007bff'}}>BLOGS</span>
             </h1>
             <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
               Cutting-edge AI & Cybersecurity intelligence, threat analysis, and expert insights to keep your organization secure in an evolving digital landscape.
@@ -199,68 +292,6 @@ export default function SimpleBlogList() {
                 </div>
               </div>
             </div>
-
-            {/* Latest Article */}
-            {filteredPosts.length > 0 && (
-              <div className="max-w-5xl mx-auto mb-12">
-                <div className="flex items-center justify-center gap-3 mb-6">
-                  <span className="text-3xl"></span>
-                  <h2 className="text-2xl font-black text-gray-900">LATEST ARTICLE</h2>
-                </div>
-                {(() => {
-                  const latestPost = filteredPosts[0];
-                  return (
-                    <article className="bg-white border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-blue-300 transition-all duration-500 hover:transform hover:scale-[1.02] shadow-lg hover:shadow-2xl">
-                      <div className="flex h-64">
-                        {latestPost.mainImage?.asset?.url ? (
-                          <div className="w-80 h-full flex-shrink-0 overflow-hidden">
-                            <img 
-                              src={latestPost.mainImage.asset.url} 
-                              alt={latestPost.mainImage.alt || latestPost.title}
-                              className="w-full h-full object-cover"
-                            />
-                          </div>
-                        ) : (
-                          <div className="w-80 h-full flex-shrink-0 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500"></div>
-                        )}
-                        <div className="p-8 flex-1">
-                          <div className="flex items-center gap-4 mb-4">
-                            <span className="bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-800 px-4 py-2 rounded-full text-sm font-bold border border-blue-200">
-                              {latestPost.category}
-                            </span>
-                            <span className="text-gray-400 text-sm flex items-center gap-2">
-                              <span>⏱️</span> {latestPost.readTime}
-                            </span>
-                            <span className="text-gray-400 text-sm flex items-center gap-2">
-                              <span>👤</span> {latestPost.author}
-                            </span>
-                          </div>
-                          <h3 className="text-3xl font-black text-gray-900 mb-4 leading-tight">
-                            {latestPost.title}
-                          </h3>
-                          <p className="text-gray-600 mb-6 leading-relaxed">
-                            {latestPost.excerpt}
-                          </p>
-                          <div className="flex items-center justify-between">
-                            <Link 
-                              to={`/blog/${latestPost.slug?.current}`}
-                              className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg"
-                            >
-                              READ MORE
-                            </Link>
-                            <div className="text-right">
-                              <div className="text-gray-400 text-xs">
-                                {new Date(latestPost.publishedAt).toLocaleDateString()}
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </article>
-                  );
-                })()}
-              </div>
-            )}
 
             {/* Enhanced Filters */}
             <div className="flex flex-col lg:flex-row items-center justify-center gap-6 mb-8">
@@ -287,15 +318,33 @@ export default function SimpleBlogList() {
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
-                <option value="popular">Most Popular</option>
               </select>
             </div>
+
+            {/* Debug Section */}
+            {useSample && (
+              <div className="bg-yellow-100 border-2 border-yellow-300 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
+                <div className="text-yellow-800 font-bold mb-2">⚠️ Using Demo Articles</div>
+                <div className="text-yellow-700 text-sm mb-3">Your Sanity CMS connection isn't working. Check:</div>
+                <button 
+                  onClick={testSanityConnection}
+                  className="bg-yellow-600 text-white px-4 py-2 rounded font-bold text-sm hover:bg-yellow-700"
+                >
+                  Test Sanity Connection
+                </button>
+                {debugInfo && (
+                  <div className="mt-3 p-3 bg-gray-100 rounded text-xs font-mono text-gray-800 overflow-auto max-h-32">
+                    {debugInfo}
+                  </div>
+                )}
+              </div>
+            )}
 
             {/* Stats */}
             <div className="flex justify-center items-center gap-8 text-sm text-gray-500">
               <div className="flex items-center gap-2">
-                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
-                <span>Live Updates</span>
+                <span className={`w-2 h-2 rounded-full animate-pulse ${useSample ? 'bg-yellow-500' : 'bg-green-500'}`}></span>
+                <span>{useSample ? 'Demo Mode' : 'Live Data'}</span>
               </div>
               <div>📊 {filteredPosts.length} Articles</div>
               <div>👥 Expert Authors</div>
@@ -305,72 +354,162 @@ export default function SimpleBlogList() {
       </div>
 
       {/* Blog Content */}
-      <div className="container mx-auto px-6 py-16">
-        {useSample && (
-          <div className="bg-gradient-to-r from-amber-50 to-orange-50 border-2 border-amber-200 p-8 rounded-2xl mb-16 text-center relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-100 to-orange-100 opacity-50"></div>
-            <div className="relative z-10">
-              <div className="text-4xl mb-4">🚀</div>
-              <p className="text-amber-800 font-bold text-lg mb-2">
-                DEMO MODE ACTIVE
-              </p>
-              <p className="text-amber-700">
-                You're viewing sample cybersecurity content. Connect to Sanity CMS for live blog management.
-              </p>
+      <div className="container mx-auto px-6">
+        {/* Latest Article */}
+        {posts.length > 0 && (
+          <div className="mb-20">
+            <div className="flex items-center justify-start gap-3 mb-8">
+              <h2 className="text-3xl font-black text-gray-900">LATEST ARTICLE</h2>
             </div>
+            {(() => {
+              const latestPost = [...posts].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))[0];
+              return (
+                <article className="relative rounded-3xl overflow-hidden shadow-2xl group hover:transform hover:scale-[1.02] transition-all duration-700" style={{background: 'linear-gradient(135deg, #007bff 0%, #081745 100%)'}}>
+                  <div className="absolute inset-0 bg-black opacity-30"></div>
+                  <div className="relative z-10 p-12 text-white">
+                    <div className="flex flex-wrap items-center gap-4 mb-8">
+                      <span className="bg-white bg-opacity-20 backdrop-blur-sm px-6 py-3 rounded-full text-sm font-bold border border-white border-opacity-30">
+                        🔥 {latestPost.category}
+                      </span>
+                      <span className="text-blue-100 flex items-center gap-2">
+                        <span>⏱️</span> {typeof latestPost.readTime === 'string' ? latestPost.readTime : 'N/A'}
+                      </span>
+                      <span className="text-blue-100 flex items-center gap-2">
+                        <span>👤</span> {typeof latestPost.author === 'string' ? latestPost.author : 'Anonymous'}
+                      </span>
+                    </div>
+                    <h3 className="text-5xl md:text-6xl font-black mb-8 leading-tight">
+                      {latestPost.title}
+                    </h3>
+                    <p className="text-2xl text-blue-100 mb-10 leading-relaxed max-w-4xl">
+                      {latestPost.excerpt}
+                    </p>
+                    <div className="flex flex-wrap gap-3 mb-8">
+                      {(latestPost.tags || ['AI', 'Security', 'Tech']).slice(0, 3).map((tag, tagIndex) => (
+                        <span key={tagIndex} className="bg-white bg-opacity-20 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-semibold border border-white border-opacity-30">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
+                    <Link 
+                      to={`/blog/${latestPost.slug?.current}`}
+                      className="inline-flex items-center bg-white text-black px-10 py-5 rounded-full font-black text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl group"
+                    >
+                      READ ARTICLE
+                      <span className="ml-4 transform group-hover:translate-x-2 transition-transform duration-300">→</span>
+                    </Link>
+                  </div>
+                </article>
+              );
+            })()}
           </div>
         )}
-        
-        {filteredPosts.length === 0 ? (
-          <div className="bg-gray-50 border-2 border-gray-200 p-16 rounded-3xl text-center shadow-xl">
-            <div className="text-6xl mb-6">🔍</div>
-            <h2 className="text-4xl font-black text-gray-900 mb-6">NO INSIGHTS FOUND</h2>
-            <p className="text-gray-600 text-xl mb-8">
-              {searchTerm || selectedCategory !== 'All' 
-                ? 'Try adjusting your search criteria or explore different categories.' 
-                : 'Create compelling cybersecurity content in your Sanity Studio.'}
-            </p>
-            <button 
-              onClick={() => {setSearchTerm(''); setSelectedCategory('All');}}
-              className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg transition-all duration-300"
-            >
-              RESET FILTERS
-            </button>
-          </div>
-        ) : (
-          <>
-            {/* Security Intelligence Feed Header */}
-            <div className="flex flex-col md:flex-row justify-between items-center mb-12 p-6 bg-gradient-to-r from-gray-50 to-blue-50 rounded-2xl">
-              <div>
-                <h2 className="text-2xl font-black text-gray-900">
-                  SECURITY INTELLIGENCE FEED
-                </h2>
-                <p className="text-gray-600">
-                  <span className="font-bold text-blue-600">{filteredPosts.length}</span> expert insights
-                  {selectedCategory !== 'All' && (
-                    <span> in <span className="font-bold text-blue-600">{selectedCategory}</span></span>
-                  )}
-                </p>
-              </div>
-              <div className="flex items-center gap-4 mt-4 md:mt-0">
-                <div className="flex items-center gap-2 text-sm text-gray-500">
-                  <div className="w-2 h-2 bg-blue-500 rounded-full animate-pulse"></div>
-                  <span>Updated Daily</span>
-                </div>
-              </div>
-            </div>
 
+        {/* Filtered Results */}
+        {(searchTerm || selectedCategory !== 'All') && (
+          <div className="mb-20">
+            <div className="flex items-center justify-start gap-3 mb-8">
+              <h2 className="text-3xl font-black text-gray-900">RESULTS ({filteredPosts.length})</h2>
+            </div>
+            {filteredPosts.length === 0 ? (
+              <div className="bg-gray-50 border-2 border-gray-200 p-16 rounded-3xl text-center shadow-xl">
+                <div className="text-6xl mb-6">🔍</div>
+                <h2 className="text-4xl font-black text-gray-900 mb-6">NO RESULTS FOUND</h2>
+                <p className="text-gray-600 text-xl mb-8">
+                  Try adjusting your search criteria or explore different categories.
+                </p>
+                <button 
+                  onClick={() => {setSearchTerm(''); setSelectedCategory('All');}}
+                  className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-4 rounded-full font-bold hover:shadow-lg transition-all duration-300"
+                >
+                  RESET FILTERS
+                </button>
+              </div>
+            ) : (
+              <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
+                {filteredPosts.map((post, index) => (
+                  <article key={post._id} className="group bg-white border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-blue-300 transition-all duration-500 hover:transform hover:scale-105 shadow-lg hover:shadow-2xl">
+                    {post.mainImage?.asset?.url ? (
+                      <div className="h-48 overflow-hidden">
+                        <img 
+                          src={post.mainImage.asset.url} 
+                          alt={post.mainImage.alt || post.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    ) : (
+                      <div className="h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center">
+                        <img 
+                          src="/logo.png" 
+                          alt="Cygne Noir Cyber Logo" 
+                          className="w-24 h-18 object-contain opacity-60"
+                        />
+                      </div>
+                    )}
+                    
+                    <div className="p-8">
+                      <div className="flex items-center justify-between mb-6">
+                        <span className="bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-800 px-4 py-2 rounded-full text-sm font-bold border border-blue-200">
+                          {typeof post.category === 'string' ? post.category : 'Uncategorized'}
+                        </span>
+                        <div className="flex items-center gap-2 text-gray-400 text-sm">
+                          <span>⏱️</span>
+                          <span>{typeof post.readTime === 'string' ? post.readTime : 'N/A'}</span>
+                        </div>
+                      </div>
+                      
+                      <h3 className="text-2xl font-black text-gray-900 mb-4 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-blue-600 group-hover:to-cyan-600 transition-all duration-300 leading-tight">
+                        {post.title}
+                      </h3>
+                      
+                      <p className="text-gray-600 mb-6 leading-relaxed line-clamp-3">
+                        {post.excerpt}
+                      </p>
+                      
+                      <div className="flex flex-wrap gap-2 mb-6">
+                        {(post.tags || ['Security', 'Tech', 'Cyber']).slice(0, 3).map((tag, tagIndex) => (
+                          <span key={tagIndex} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                      
+                      <div className="flex items-center justify-between">
+                        <Link 
+                          to={`/blog/${post.slug?.current}`}
+                          className="text-blue-600 hover:text-blue-700 font-bold transition-colors duration-300 flex items-center gap-2 group"
+                        >
+                          READ MORE 
+                          <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
+                        </Link>
+                        <div className="text-right">
+                          <div className="text-gray-400 text-sm">{typeof post.author === 'string' ? post.author : 'Anonymous'}</div>
+                          <div className="text-gray-400 text-xs">
+                            {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : 'N/A'}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Show All Articles when no filters are applied */}
+        {!searchTerm && selectedCategory === 'All' && (
+          <>
             {/* Featured Article */}
             {filteredPosts.find(post => post.featured) && (
               <div className="mb-20">
                 <div className="flex items-center gap-3 mb-8">
-                  <span className="text-3xl">⭐</span>
-                  <h2 className="text-3xl font-black text-gray-900">FEATURED INTELLIGENCE</h2>
+                  <h2 className="text-3xl font-black text-gray-900">FEATURED ARTICLE</h2>
                 </div>
                 {(() => {
                   const featuredPost = filteredPosts.find(post => post.featured);
                   return (
-                    <article className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-cyan-600 rounded-3xl overflow-hidden shadow-2xl group hover:transform hover:scale-[1.02] transition-all duration-700">
+                    <article className="relative rounded-3xl overflow-hidden shadow-2xl group hover:transform hover:scale-[1.02] transition-all duration-700" style={{background: 'linear-gradient(135deg, #007bff 0%, #081745 100%)'}}>
                       <div className="absolute inset-0 bg-black opacity-20"></div>
                       <div className="relative z-10 p-12 text-white">
                         <div className="flex flex-wrap items-center gap-4 mb-8">
@@ -391,18 +530,17 @@ export default function SimpleBlogList() {
                           {featuredPost.excerpt}
                         </p>
                         <div className="flex flex-wrap gap-3 mb-8">
-                          {featuredPost.tags?.map((tag, index) => (
-                            <span key={index} className="bg-white bg-opacity-10 backdrop-blur-sm px-4 py-2 rounded-full text-sm border border-white border-opacity-20">
+                          {(featuredPost.tags || ['Featured', 'Security', 'AI']).map((tag, index) => (
+                            <span key={index} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium">
                               #{tag}
                             </span>
                           ))}
                         </div>
                         <Link 
                           to={`/blog/${featuredPost.slug?.current}`}
-                          className="inline-flex items-center bg-white text-blue-600 px-10 py-5 rounded-full font-black text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl group"
+                          className="inline-flex items-center bg-white text-black px-10 py-5 rounded-full font-black text-lg transition-all duration-300 transform hover:scale-105 shadow-2xl group"
                         >
-                          <span className="mr-3">🚀</span>
-                          READ FEATURED ARTICLE
+                          READ ARTICLE
                           <span className="ml-4 transform group-hover:translate-x-2 transition-transform duration-300">→</span>
                         </Link>
                       </div>
@@ -413,6 +551,9 @@ export default function SimpleBlogList() {
             )}
 
             {/* Articles Grid */}
+            <div className="mb-8">
+              <h2 className="text-3xl font-black text-gray-900 mb-8">ALL ARTICLES</h2>
+            </div>
             <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
               {filteredPosts.filter(post => !post.featured).map((post, index) => (
                 <article key={post._id} className="group bg-white border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-blue-300 transition-all duration-500 hover:transform hover:scale-105 shadow-lg hover:shadow-2xl">
@@ -426,17 +567,23 @@ export default function SimpleBlogList() {
                       />
                     </div>
                   ) : (
-                    <div className="h-2 bg-gradient-to-r from-blue-500 via-purple-500 to-cyan-500"></div>
+                    <div className="h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center">
+                      <img 
+                        src="/logo.png" 
+                        alt="Cygne Noir Cyber Logo" 
+                        className="w-24 h-18 object-contain opacity-60"
+                      />
+                    </div>
                   )}
                   
                   <div className="p-8">
                     <div className="flex items-center justify-between mb-6">
                       <span className="bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-800 px-4 py-2 rounded-full text-sm font-bold border border-blue-200">
-                        {post.category}
+                        {typeof post.category === 'string' ? post.category : 'Uncategorized'}
                       </span>
                       <div className="flex items-center gap-2 text-gray-400 text-sm">
                         <span>⏱️</span>
-                        <span>{post.readTime}</span>
+                        <span>{typeof post.readTime === 'string' ? post.readTime : 'N/A'}</span>
                       </div>
                     </div>
                     
@@ -448,15 +595,13 @@ export default function SimpleBlogList() {
                       {post.excerpt}
                     </p>
                     
-                    {post.tags && (
-                      <div className="flex flex-wrap gap-2 mb-6">
-                        {post.tags.slice(0, 3).map((tag, tagIndex) => (
-                          <span key={tagIndex} className="bg-gray-100 text-gray-600 px-3 py-1 rounded-full text-xs font-medium">
-                            #{tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
+                    <div className="flex flex-wrap gap-2 mb-6">
+                      {(post.tags || ['Security', 'Tech', 'Cyber']).slice(0, 3).map((tag, tagIndex) => (
+                        <span key={tagIndex} className="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-xs font-medium">
+                          #{tag}
+                        </span>
+                      ))}
+                    </div>
                     
                     <div className="flex items-center justify-between">
                       <Link 
@@ -467,9 +612,9 @@ export default function SimpleBlogList() {
                         <span className="transform group-hover:translate-x-1 transition-transform duration-300">→</span>
                       </Link>
                       <div className="text-right">
-                        <div className="text-gray-400 text-sm">{post.author}</div>
+                        <div className="text-gray-400 text-sm">{typeof post.author === 'string' ? post.author : 'Anonymous'}</div>
                         <div className="text-gray-400 text-xs">
-                          {new Date(post.publishedAt).toLocaleDateString()}
+                          {post.publishedAt ? new Date(post.publishedAt).toLocaleDateString() : 'N/A'}
                         </div>
                       </div>
                     </div>
@@ -487,16 +632,39 @@ export default function SimpleBlogList() {
                 <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
                   Get the latest cybersecurity insights, threat intelligence, and expert analysis delivered to your inbox.
                 </p>
-                <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
-                  <input
-                    type="email"
-                    placeholder="Enter your email"
-                    className="flex-1 px-6 py-4 rounded-full text-gray-900 font-medium focus:outline-none focus:ring-4 focus:ring-blue-300"
-                  />
-                  <button className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-4 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg">
-                    SUBSCRIBE
-                  </button>
-                </div>
+                {subscribed ? (
+                  <div className="bg-green-500 text-white px-8 py-4 rounded-full font-bold max-w-lg mx-auto">
+                    ✅ Thank you for subscribing! Check your email.
+                  </div>
+                ) : (
+                  <div className="flex flex-col sm:flex-row gap-4 max-w-lg mx-auto">
+                    <input
+                      type="email"
+                      placeholder="Enter your email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="flex-1 px-6 py-4 rounded-full text-gray-900 font-medium focus:outline-none focus:ring-4 focus:ring-blue-300"
+                    />
+                    <button 
+                      onClick={() => {
+                        if (email && email.includes('@')) {
+                          // Store email in localStorage
+                          const existingEmails = JSON.parse(localStorage.getItem('subscribedEmails') || '[]');
+                          existingEmails.push({ email, date: new Date().toISOString() });
+                          localStorage.setItem('subscribedEmails', JSON.stringify(existingEmails));
+                          console.log('Email stored:', email);
+                          setSubscribed(true);
+                          setEmail('');
+                        } else {
+                          alert('Please enter a valid email address');
+                        }
+                      }}
+                      className="bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 px-8 py-4 rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg"
+                    >
+                      SUBSCRIBE
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </>
