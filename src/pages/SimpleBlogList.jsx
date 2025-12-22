@@ -122,38 +122,25 @@ export default function SimpleBlogList() {
   
   const testSanityConnection = async () => {
     try {
-      setDebugInfo('Testing Sanity connection...');
+      const hasToken = !!process.env.REACT_APP_SANITY_TOKEN;
+      const tokenPreview = process.env.REACT_APP_SANITY_TOKEN ? 
+        process.env.REACT_APP_SANITY_TOKEN.substring(0, 10) + '...' : 'NOT FOUND';
       
-      // Test 1: Check if we can connect at all
+      setDebugInfo(`Token: ${hasToken ? '✅ Found' : '❌ Missing'} (${tokenPreview})\nTesting connection...`);
+      
       const basicQuery = `*[_type == "post"]{ _id }`;
       const basicResult = await client.fetch(basicQuery);
       
-      // Test 2: Check published posts
       const publishedQuery = `*[_type == "post" && !(_id in path("drafts.**"))]{ _id, title, publishedAt }`;
       const publishedResult = await client.fetch(publishedQuery);
       
-      // Test 3: Check draft posts
-      const draftQuery = `*[_type == "post" && _id in path("drafts.**")]{ _id, title }`;
-      const draftResult = await client.fetch(draftQuery);
-      
-      setDebugInfo(`✅ Connection successful!
-
-Total posts: ${basicResult.length}
-Published posts: ${publishedResult.length}
-Draft posts: ${draftResult.length}
-
-Published posts:
-${JSON.stringify(publishedResult, null, 2)}
-
-${publishedResult.length === 0 ? '⚠️ No published posts found! Make sure to publish your posts in Sanity Studio.' : ''}`);
+      setDebugInfo(`✅ Connection successful!\nToken: ${hasToken ? '✅ Found' : '❌ Missing'} (${tokenPreview})\n\nTotal posts: ${basicResult.length}\nPublished posts: ${publishedResult.length}\n\nPublished posts:\n${JSON.stringify(publishedResult, null, 2)}\n\n${publishedResult.length === 0 ? '⚠️ No published posts found! Make sure to publish your posts in Sanity Studio.' : ''}`);
     } catch (error) {
-      setDebugInfo(`❌ Connection Error: ${error.message}
-
-Possible solutions:
-1. Make sure your Sanity dataset is public OR add a token
-2. Check if posts are published (not drafts)
-3. Verify project ID: x9c1zj30
-4. Check if Sanity Studio is accessible`);
+      const hasToken = !!process.env.REACT_APP_SANITY_TOKEN;
+      const tokenPreview = process.env.REACT_APP_SANITY_TOKEN ? 
+        process.env.REACT_APP_SANITY_TOKEN.substring(0, 10) + '...' : 'NOT FOUND';
+        
+      setDebugInfo(`❌ Connection Error: ${error.message}\nToken: ${hasToken ? '✅ Found' : '❌ Missing'} (${tokenPreview})\n\nFor Vercel deployment:\n1. Add REACT_APP_SANITY_TOKEN to Vercel environment variables\n2. Redeploy the project\n3. Make sure posts are published in Sanity Studio`);
     }
   };
   
