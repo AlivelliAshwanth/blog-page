@@ -308,30 +308,11 @@ export default function SimpleBlogList() {
               </select>
             </div>
 
-            {/* Debug Section */}
-            {useSample && (
-              <div className="bg-yellow-100 border-2 border-yellow-300 rounded-lg p-4 mb-6 max-w-2xl mx-auto">
-                <div className="text-yellow-800 font-bold mb-2">⚠️ Using Demo Articles</div>
-                <div className="text-yellow-700 text-sm mb-3">Your Sanity CMS connection isn't working. Check:</div>
-                <button 
-                  onClick={testSanityConnection}
-                  className="bg-yellow-600 text-white px-4 py-2 rounded font-bold text-sm hover:bg-yellow-700"
-                >
-                  Test Sanity Connection
-                </button>
-                {debugInfo && (
-                  <div className="mt-3 p-3 bg-gray-100 rounded text-xs font-mono text-gray-800 overflow-auto max-h-32">
-                    {debugInfo}
-                  </div>
-                )}
-              </div>
-            )}
-
             {/* Stats */}
             <div className="flex justify-center items-center gap-8 text-sm text-gray-500">
               <div className="flex items-center gap-2">
-                <span className={`w-2 h-2 rounded-full animate-pulse ${useSample ? 'bg-yellow-500' : 'bg-green-500'}`}></span>
-                <span>{useSample ? 'Demo Mode' : 'Live Data'}</span>
+                <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                <span>Regular Updates</span>
               </div>
               <div>📊 {filteredPosts.length} Articles</div>
               <div>👥 Expert Authors</div>
