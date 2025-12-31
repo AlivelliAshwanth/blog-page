@@ -246,25 +246,25 @@ export default function SimpleBlogList() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Animated Hero Section */}
-      <div className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-12 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-8 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-0">
             <div className="inline-block">
               <span className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider">
                 AI & CYBERSECURITY INSIGHTS
               </span>
             </div>
-            <h1 className="text-4xl md:text-5xl font-black mb-6 leading-none mt-4">
+            <h1 className="text-3xl md:text-4xl font-black mb-4 leading-none mt-3">
               <span className="text-gray-900 block">CYGNENOIR CYBER</span>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 animate-gradient-x" style={{color: '#007bff'}}>BLOGS</span>
             </h1>
-            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
+            <p className="text-base text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6">
               Cutting-edge AI & Cybersecurity intelligence, threat analysis, and expert insights to keep your organization secure in an evolving digital landscape.
             </p>
             
             {/* Enhanced Search Bar */}
-            <div className="max-w-3xl mx-auto mb-12">
+            <div className="max-w-2xl mx-auto mb-8">
               <div className="relative group">
                 <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-cyan-600 rounded-full blur opacity-25 group-hover:opacity-40 transition duration-300"></div>
                 <div className="relative">
@@ -273,7 +273,7 @@ export default function SimpleBlogList() {
                     placeholder="Search cybersecurity insights, threats, solutions..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
-                    className="w-full px-8 py-6 text-lg border-2 border-gray-200 rounded-full focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 shadow-lg"
+                    className="w-full px-6 py-4 text-base border-2 border-gray-200 rounded-full focus:outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-100 transition-all duration-300 shadow-lg"
                   />
                   <div className="absolute right-6 top-1/2 transform -translate-y-1/2 text-2xl text-gray-400">
                     🔍
@@ -283,13 +283,13 @@ export default function SimpleBlogList() {
             </div>
 
             {/* Enhanced Filters */}
-            <div className="flex flex-col lg:flex-row items-center justify-center gap-6 mb-8">
+            <div className="flex flex-col lg:flex-row items-center justify-center gap-4 mb-6">
               <div className="flex flex-wrap justify-center gap-3">
                 {categories.map((category) => (
                   <button
                     key={category}
                     onClick={() => setSelectedCategory(category)}
-                    className={`px-6 py-3 rounded-full font-bold transition-all duration-300 transform hover:scale-105 ${
+                    className={`px-4 py-2 rounded-full font-bold transition-all duration-300 transform hover:scale-105 ${
                       selectedCategory === category
                         ? 'bg-gradient-to-r from-blue-600 to-cyan-600 text-white shadow-lg shadow-blue-200'
                         : 'bg-white text-gray-600 border-2 border-gray-200 hover:border-blue-500 hover:text-blue-600 hover:shadow-md'
@@ -303,7 +303,7 @@ export default function SimpleBlogList() {
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value)}
-                className="px-6 py-3 border-2 border-gray-200 rounded-full font-bold focus:outline-none focus:border-blue-500 bg-white"
+                className="px-4 py-2 border-2 border-gray-200 rounded-full font-bold focus:outline-none focus:border-blue-500 bg-white"
               >
                 <option value="newest">Newest First</option>
                 <option value="oldest">Oldest First</option>
@@ -327,16 +327,16 @@ export default function SimpleBlogList() {
       <div className="container mx-auto px-6">
         {/* Latest Article */}
         {posts.length > 0 && (
-          <div className="mb-20">
-            <div className="flex items-center justify-start gap-3 mb-8">
-              <h2 className="text-3xl font-black text-gray-900">LATEST ARTICLE</h2>
+          <div className="mb-12">
+            <div className="flex items-center justify-start gap-3 mb-6">
+              <h2 className="text-2xl font-black text-gray-900">LATEST ARTICLE</h2>
             </div>
             {(() => {
               const latestPost = [...posts].sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))[0];
               return (
-                <article className="relative rounded-3xl overflow-hidden shadow-2xl group hover:transform hover:scale-[1.02] transition-all duration-700" style={{background: 'linear-gradient(135deg, #007bff 0%, #081745 100%)'}}>
+                <article className="relative rounded-2xl overflow-hidden shadow-xl group hover:transform hover:scale-[1.02] transition-all duration-700" style={{background: 'linear-gradient(135deg, #007bff 0%, #081745 100%)'}}>
                   <div className="absolute inset-0 bg-black opacity-30"></div>
-                  <div className="relative z-10 p-12 text-white">
+                  <div className="relative z-10 p-8 text-white">
                     <div className="flex flex-wrap items-center gap-4 mb-8">
                       <span className="bg-white bg-opacity-20 backdrop-blur-sm px-6 py-3 rounded-full text-sm font-bold border border-white border-opacity-30">
                         🔥 {latestPost.category}
@@ -348,10 +348,10 @@ export default function SimpleBlogList() {
                         <span>👤</span> {typeof latestPost.author === 'string' ? latestPost.author : 'Anonymous'}
                       </span>
                     </div>
-                    <h3 className="text-5xl md:text-6xl font-black mb-8 leading-tight">
+                    <h3 className="text-3xl md:text-4xl font-black mb-6 leading-tight">
                       {latestPost.title}
                     </h3>
-                    <p className="text-2xl text-blue-100 mb-10 leading-relaxed max-w-4xl">
+                    <p className="text-lg text-blue-100 mb-8 leading-relaxed max-w-4xl">
                       {latestPost.excerpt}
                     </p>
                     <div className="flex flex-wrap gap-3 mb-8">
@@ -377,15 +377,15 @@ export default function SimpleBlogList() {
 
         {/* Filtered Results */}
         {(searchTerm || selectedCategory !== 'All') && (
-          <div className="mb-20">
-            <div className="flex items-center justify-start gap-3 mb-8">
-              <h2 className="text-3xl font-black text-gray-900">RESULTS ({filteredPosts.length})</h2>
+          <div className="mb-12">
+            <div className="flex items-center justify-start gap-3 mb-6">
+              <h2 className="text-2xl font-black text-gray-900">RESULTS ({filteredPosts.length})</h2>
             </div>
             {filteredPosts.length === 0 ? (
-              <div className="bg-gray-50 border-2 border-gray-200 p-16 rounded-3xl text-center shadow-xl">
-                <div className="text-6xl mb-6">🔍</div>
-                <h2 className="text-4xl font-black text-gray-900 mb-6">NO RESULTS FOUND</h2>
-                <p className="text-gray-600 text-xl mb-8">
+              <div className="bg-gray-50 border-2 border-gray-200 p-12 rounded-2xl text-center shadow-xl">
+                <div className="text-4xl mb-4">🔍</div>
+                <h2 className="text-3xl font-black text-gray-900 mb-4">NO RESULTS FOUND</h2>
+                <p className="text-gray-600 text-lg mb-6">
                   Try adjusting your search criteria or explore different categories.
                 </p>
                 <button 
@@ -417,7 +417,7 @@ export default function SimpleBlogList() {
                       </div>
                     )}
                     
-                    <div className="p-8">
+                    <div className="p-6">
                       <div className="flex items-center justify-between mb-6">
                         <span className="bg-gradient-to-r from-blue-100 to-cyan-100 text-blue-800 px-4 py-2 rounded-full text-sm font-bold border border-blue-200">
                           {typeof post.category === 'string' ? post.category : 'Uncategorized'}
@@ -472,16 +472,16 @@ export default function SimpleBlogList() {
           <>
             {/* Featured Article */}
             {filteredPosts.find(post => post.featured) && (
-              <div className="mb-20">
-                <div className="flex items-center gap-3 mb-8">
-                  <h2 className="text-3xl font-black text-gray-900">FEATURED ARTICLE</h2>
+              <div className="mb-12">
+                <div className="flex items-center gap-3 mb-6">
+                  <h2 className="text-2xl font-black text-gray-900">FEATURED ARTICLE</h2>
                 </div>
                 {(() => {
                   const featuredPost = filteredPosts.find(post => post.featured);
                   return (
-                    <article className="relative rounded-3xl overflow-hidden shadow-2xl group hover:transform hover:scale-[1.02] transition-all duration-700" style={{background: 'linear-gradient(135deg, #007bff 0%, #081745 100%)'}}>
+                    <article className="relative rounded-2xl overflow-hidden shadow-xl group hover:transform hover:scale-[1.02] transition-all duration-700" style={{background: 'linear-gradient(135deg, #007bff 0%, #081745 100%)'}}>
                       <div className="absolute inset-0 bg-black opacity-20"></div>
-                      <div className="relative z-10 p-12 text-white">
+                      <div className="relative z-10 p-8 text-white">
                         <div className="flex flex-wrap items-center gap-4 mb-8">
                           <span className="bg-white bg-opacity-20 backdrop-blur-sm px-6 py-3 rounded-full text-sm font-bold border border-white border-opacity-30">
                             🔥 {featuredPost.category}
@@ -493,10 +493,10 @@ export default function SimpleBlogList() {
                             <span>👤</span> {featuredPost.author}
                           </span>
                         </div>
-                        <h3 className="text-5xl md:text-6xl font-black mb-8 leading-tight">
+                        <h3 className="text-3xl md:text-4xl font-black mb-6 leading-tight">
                           {featuredPost.title}
                         </h3>
-                        <p className="text-2xl text-blue-100 mb-10 leading-relaxed max-w-4xl">
+                        <p className="text-lg text-blue-100 mb-8 leading-relaxed max-w-4xl">
                           {featuredPost.excerpt}
                         </p>
                         <div className="flex flex-wrap gap-3 mb-8">
@@ -521,8 +521,8 @@ export default function SimpleBlogList() {
             )}
 
             {/* Articles Grid */}
-            <div className="mb-8">
-              <h2 className="text-3xl font-black text-gray-900 mb-8">ALL ARTICLES</h2>
+            <div className="mb-6">
+              <h2 className="text-2xl font-black text-gray-900 mb-6">ALL ARTICLES</h2>
             </div>
             <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
               {filteredPosts.map((post, index) => (
@@ -594,12 +594,12 @@ export default function SimpleBlogList() {
             </div>
 
             {/* Newsletter Signup */}
-            <div className="mt-20 bg-gradient-to-r from-gray-900 to-blue-900 rounded-3xl p-12 text-center text-white relative overflow-hidden">
+            <div className="mt-12 bg-gradient-to-r from-gray-900 to-blue-900 rounded-2xl p-8 text-center text-white relative overflow-hidden">
               <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
               <div className="relative z-10">
-                <div className="text-5xl mb-6">📧</div>
-                <h2 className="text-4xl font-black mb-6">STAY AHEAD OF THREATS</h2>
-                <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
+                <div className="text-3xl mb-4">📧</div>
+                <h2 className="text-2xl font-black mb-4">STAY AHEAD OF THREATS</h2>
+                <p className="text-lg text-blue-100 mb-6 max-w-2xl mx-auto">
                   Get the latest cybersecurity insights, threat intelligence, and expert analysis delivered to your inbox.
                 </p>
                 {subscribed ? (
