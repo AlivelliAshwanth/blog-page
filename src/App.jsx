@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 function SimpleNavbar() {
   return (
     <nav className="bg-white border-b border-gray-200 text-gray-900 p-3 sticky top-0 z-50 backdrop-blur-sm shadow-sm">
-      <div className="container mx-auto flex justify-between items-center">
+      <div className="flex justify-between items-center px-4">
         <a href="https://www.cygnenoircyber.com" className="flex items-center gap-3 text-2xl font-black text-gray-900 hover:text-blue-600 transition-colors duration-300">
           <img 
             src="/logo.png" 
