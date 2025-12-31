@@ -408,9 +408,9 @@ export default function SimpleBlogList() {
                     ) : (
                       <div className="h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center">
                         <img 
-                          src="/logo.png" 
-                          alt="Cygne Noir Cyber Logo" 
-                          className="w-24 h-18 object-contain opacity-60"
+                          src={getPlaceholderImage(post)} 
+                          alt={post.title}
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                         />
                       </div>
                     )}
@@ -537,9 +537,9 @@ export default function SimpleBlogList() {
                   ) : (
                     <div className="h-48 overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 flex items-center justify-center">
                       <img 
-                        src="/logo.png" 
-                        alt="Cygne Noir Cyber Logo" 
-                        className="w-24 h-18 object-contain opacity-60"
+                        src={getPlaceholderImage(post)} 
+                        alt={post.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                       />
                     </div>
                   )}
