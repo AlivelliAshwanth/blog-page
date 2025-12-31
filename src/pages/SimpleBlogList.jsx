@@ -184,17 +184,17 @@ export default function SimpleBlogList() {
         console.log('Sanity response:', data);
         console.log('Number of posts fetched:', data?.length || 0);
         
-        // Always use Sanity data if any posts exist, even if it's 0
+        // Always use Sanity data, even if empty
         console.log('✅ Using Sanity data - Found', data?.length || 0, 'posts');
         setPosts(data || []);
         setFilteredPosts(data || []);
         setUseSample(false);
       } catch (error) {
         console.error('❌ Error fetching posts from Sanity:', error);
-        console.log('Falling back to sample posts due to error');
-        setPosts(samplePosts);
-        setFilteredPosts(samplePosts);
-        setUseSample(true);
+        console.log('Using empty array due to error');
+        setPosts([]);
+        setFilteredPosts([]);
+        setUseSample(false);
       } finally {
         setLoading(false);
       }
@@ -325,6 +325,17 @@ export default function SimpleBlogList() {
 
       {/* Blog Content */}
       <div className="container mx-auto px-6">
+        {/* No Posts Message */}
+        {posts.length === 0 && !loading && (
+          <div className="text-center py-20">
+            <div className="text-6xl mb-6">📝</div>
+            <h2 className="text-4xl font-black text-gray-900 mb-6">NO POSTS YET</h2>
+            <p className="text-gray-600 text-xl mb-8">
+              Posts will appear here once they are published in Sanity CMS.
+            </p>
+          </div>
+        )}
+
         {/* Latest Article */}
         {posts.length > 0 && (
           <div className="mb-12">
