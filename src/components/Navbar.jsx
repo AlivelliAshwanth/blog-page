@@ -2,8 +2,8 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   return (
-    <nav className="bg-gray-800 text-white px-16" style={{padding: '0 4rem'}}>
-      <div className="flex justify-between items-center">
+    <nav className="bg-gray-800 text-white">
+      <div className="container mx-auto px-6 flex justify-between items-center">
         <Link to="/" className="flex items-center gap-0.5" style={{fontSize: '9px', fontWeight: 'bold'}}>
           <div className="w-2 h-2 bg-gradient-to-br from-blue-400 to-cyan-400 rounded-full flex items-center justify-center">
             <span className="text-white" style={{fontSize: '6px'}}>🔒</span>
