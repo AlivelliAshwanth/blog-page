@@ -179,21 +179,16 @@ export default function SimpleBlogList() {
         }`;
         
         console.log('Fetching posts from Sanity...');
+        console.log('Using token:', process.env.REACT_APP_SANITY_TOKEN ? 'Token found' : 'No token');
         const data = await client.fetch(query);
         console.log('Sanity response:', data);
         console.log('Number of posts fetched:', data?.length || 0);
         
-        if (data && data.length > 0) {
-          console.log('✅ Using Sanity data - Found', data.length, 'posts');
-          setPosts(data);
-          setFilteredPosts(data);
-          setUseSample(false);
-        } else {
-          console.log('⚠️ No posts found in Sanity, using sample posts');
-          setPosts(samplePosts);
-          setFilteredPosts(samplePosts);
-          setUseSample(true);
-        }
+        // Always use Sanity data if any posts exist, even if it's 0
+        console.log('✅ Using Sanity data - Found', data?.length || 0, 'posts');
+        setPosts(data || []);
+        setFilteredPosts(data || []);
+        setUseSample(false);
       } catch (error) {
         console.error('❌ Error fetching posts from Sanity:', error);
         console.log('Falling back to sample posts due to error');
