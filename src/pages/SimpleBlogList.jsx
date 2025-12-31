@@ -526,7 +526,7 @@ export default function SimpleBlogList() {
               <h2 className="text-3xl font-black text-gray-900 mb-8">ALL ARTICLES</h2>
             </div>
             <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-8">
-              {filteredPosts.filter(post => !post.featured).map((post, index) => (
+              {filteredPosts.map((post, index) => (
                 <article key={post._id} className="group bg-white border-2 border-gray-100 rounded-2xl overflow-hidden hover:border-blue-300 transition-all duration-500 hover:transform hover:scale-105 shadow-lg hover:shadow-2xl">
                   {/* Main Image */}
                   {post.mainImage?.asset?.url ? (
