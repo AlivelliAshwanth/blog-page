@@ -151,7 +151,7 @@ export default function SimpleBlogList() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const query = `*[_type == "post"] | order(publishedAt desc) {
+        const query = `*[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc) {
           _id,
           title,
           slug,

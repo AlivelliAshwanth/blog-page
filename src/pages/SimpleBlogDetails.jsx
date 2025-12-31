@@ -59,6 +59,492 @@ const samplePosts = {
     readTime: '10 min read',
     author: 'Lisa Wang',
     mainImage: { asset: { url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&h=300&fit=crop' }, alt: 'Security Compliance' }
+  },
+  'what-is-ai-really': {
+    title: 'What Is AI, Really? A Plain-English Guide to What Artificial Intelligence Actually Does (and Doesn\'t)',
+    category: 'AI Security',
+    readTime: '10 min read',
+    author: 'Cygne Noir Team',
+    tags: ['AI', 'Artificial Intelligence', 'Machine Learning', 'Technology', 'Ethics'],
+    publishedAt: new Date().toISOString(),
+    mainImage: { asset: { url: 'https://images.unsplash.com/photo-1555949963-aa79dcee981c?w=500&h=300&fit=crop' }, alt: 'Artificial Intelligence Overview' },
+    body: [
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'AI is everywhere — in news headlines, in boardrooms, in product pitches, and yes, even in memes. It\'s often described as the technology that will transform how we work, learn, shop, travel, and think. But let\'s be honest: Most people still have one big question — what exactly is AI, and what can it really do?'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'h2',
+        children: [
+          {
+            _type: 'span',
+            text: 'So… What Is AI, Really?'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'At its core, Artificial Intelligence is when machines can perform tasks that normally require human intelligence — like understanding language, recognizing images, spotting patterns, or making predictions. It\'s not a robot with feelings or consciousness. It\'s math, data, and pattern recognition working behind the scenes.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Think of it like this:'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Netflix learns your taste and suggests what you\'ll binge next.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Google Maps predicts traffic using data from millions of phones.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'ChatGPT (hello!) recognizes language patterns and responds like a human.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Email spam filters learn what junk mail looks like and block it automatically.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'All of that is AI quietly doing its job. It doesn\'t "think" the way humans do — it analyzes patterns and makes educated predictions. No emotions. No intuition. Just computation.'
+          }
+        ]
+      },
+      {
+        _type: 'image',
+        asset: { url: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=400&fit=crop' },
+        alt: 'AI Technology Illustration'
+      },
+      {
+        _type: 'block',
+        style: 'h2',
+        children: [
+          {
+            _type: 'span',
+            text: 'When Machines Get It Wrong'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Here\'s the part people rarely mention: AI makes mistakes — and sometimes those mistakes can be unfair. Since AI learns from data, it also learns our human biases. A few real examples:'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Facial recognition systems have misidentified darker-skinned faces more often because the training data underrepresented them.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Amazon\'s recruiting AI had to be scrapped after it began favoring male applicants — mirroring historical hiring patterns.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Credit scoring algorithms have denied loans based on zip codes, unintentionally linking decisions to geographic and demographic patterns.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'These aren\'t small glitches. They remind us that AI isn\'t neutral — it reflects the data we feed it. That\'s why ethical design, diverse datasets, and human oversight are critical. AI is powerful, but it must be responsible.'
+          }
+        ]
+      },
+      {
+        _type: 'image',
+        asset: { url: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=800&h=400&fit=crop' },
+        alt: 'AI Ethics and Bias'
+      },
+      {
+        _type: 'block',
+        style: 'h2',
+        children: [
+          {
+            _type: 'span',
+            text: 'AI Around You (Even If You Don\'t Notice)'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Even if you feel like you\'re not "using AI," you probably used it multiple times today:'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Spotify learns what you skip and builds your perfect playlist.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Gmail Smart Reply finishes your sentences ("Got it, thanks!").'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'LinkedIn recommends people you may know — or jobs you may like.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Your bank flags suspicious transactions that don\'t match your usual behavior.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Voice assistants like Siri or Alexa turn your speech into actions.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'AI is already woven into your daily life — helping you save time, make decisions, and find things faster.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'h2',
+        children: [
+          {
+            _type: 'span',
+            text: 'Can AI Think Like Us?'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Not really. AI can analyze, generate, and predict — but it doesn\'t truly understand. A simple comparison:'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'h3',
+        children: [
+          {
+            _type: 'span',
+            text: 'Situation: A friend says "I\'m fine," but you can tell they\'re upset.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Human Intuition: You sense tone, emotion, context.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'AI Logic: AI reads "I\'m fine" and assumes it\'s true.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'h3',
+        children: [
+          {
+            _type: 'span',
+            text: 'Situation: You create a new workaround at work.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Human Intuition: You use judgment, experience, creativity.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'AI Logic: AI repeats patterns it has seen before.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Humans connect emotion + experience + context. AI connects data points. It\'s not creativity — it\'s probability. And that\'s okay. It just means AI thinks differently, and it still needs humans for empathy, ethics, and big-picture judgment.'
+          }
+        ]
+      },
+      {
+        _type: 'image',
+        asset: { url: 'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=400&fit=crop' },
+        alt: 'Human vs AI Thinking'
+      },
+      {
+        _type: 'block',
+        style: 'h2',
+        children: [
+          {
+            _type: 'span',
+            text: 'The Real Power of AI'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'AI isn\'t here to replace people — it\'s here to amplify them. Used well, AI can:'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Automate repetitive tasks so humans can focus on strategy.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Help doctors detect diseases earlier.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Identify cyber threats before they spread.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Translate languages instantly across borders.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Personalize learning for every student.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'Improve customer experiences at scale.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'The magic happens when human creativity meets machine efficiency. AI is a mirror: it reflects both our strengths and our flaws. The more responsibly we build it, the more powerful it becomes.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'h2',
+        children: [
+          {
+            _type: 'span',
+            text: 'Final Thought'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'AI isn\'t magic. It\'s not a villain waiting to take over the world. And it\'s definitely not a replacement for human intelligence. It\'s a tool — one powered by data, designed by people, and shaped by our values. So the next time Netflix knows exactly what you feel like watching, or your email suggests the perfect response, smile. That\'s AI quietly doing its job — learning, predicting, adapting.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'h2',
+        children: [
+          {
+            _type: 'span',
+            text: 'How We See AI at Cygne'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'At Cygne, we believe AI should strengthen human decision-making — not replace it. Our focus is on building and applying AI responsibly, transparently, and in ways that create real value for people, teams, and businesses. We see AI as a tool that amplifies human potential, and we\'re committed to helping organizations use it thoughtfully and effectively.'
+          }
+        ]
+      },
+      {
+        _type: 'block',
+        style: 'normal',
+        children: [
+          {
+            _type: 'span',
+            text: 'AI won\'t replace humans. But humans who understand AI may replace those who don\'t.'
+          }
+        ]
+      }
+    ]
   }
 };
 
@@ -102,8 +588,19 @@ export default function SimpleBlogDetails() {
           title,
           body,
           excerpt,
+          category,
+          readTime,
+          author,
           tags,
-          publishedAt
+          featured,
+          publishedAt,
+          mainImage{
+            asset->{
+              _id,
+              url
+            },
+            alt
+          }
         }`;
         const data = await client.fetch(query, { slug });
         if (data) {
@@ -219,7 +716,38 @@ export default function SimpleBlogDetails() {
           <div className="bg-white rounded-2xl shadow-lg p-8 md:p-12">
             <div className="prose prose-lg max-w-none">
               {post.body ? (
-                <PortableText value={post.body} />
+                <PortableText 
+                  value={post.body}
+                  components={{
+                    types: {
+                      image: ({value}) => {
+                        const imageUrl = value.asset?.url || value.asset?._ref ? 
+                          `https://cdn.sanity.io/images/x9c1zj30/production/${value.asset._ref.replace('image-', '').replace('-jpg', '.jpg').replace('-png', '.png').replace('-webp', '.webp')}` :
+                          value.asset;
+                        return (
+                          <div className="my-8">
+                            <img 
+                              src={imageUrl} 
+                              alt={value.alt || 'Blog image'}
+                              className="w-full max-w-3xl mx-auto rounded-lg shadow-lg"
+                            />
+                            {value.alt && (
+                              <p className="text-center text-gray-600 text-sm mt-2 italic">
+                                {value.alt}
+                              </p>
+                            )}
+                          </div>
+                        )
+                      }
+                    },
+                    block: {
+                      h1: ({children}) => <h1 className="text-3xl font-bold text-gray-900 mt-8 mb-4">{children}</h1>,
+                      h2: ({children}) => <h2 className="text-2xl font-bold text-gray-900 mt-6 mb-3">{children}</h2>,
+                      h3: ({children}) => <h3 className="text-xl font-bold text-gray-900 mt-4 mb-2">{children}</h3>,
+                      normal: ({children}) => <p className="text-gray-700 leading-relaxed mb-4">{children}</p>
+                    }
+                  }}
+                />
               ) : (
                 <div className="space-y-6">
                   <p className="text-xl leading-relaxed text-gray-700 first-letter:text-5xl first-letter:font-bold first-letter:text-blue-600 first-letter:float-left first-letter:mr-2 first-letter:mt-1">
