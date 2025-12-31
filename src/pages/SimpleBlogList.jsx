@@ -645,6 +645,7 @@ export default function SimpleBlogList() {
           </>
         )}
       </div>
+      <div className="pb-20"></div>
     </div>
   );
 }

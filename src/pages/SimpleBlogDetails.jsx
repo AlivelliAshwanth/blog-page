@@ -818,6 +818,7 @@ export default function SimpleBlogDetails() {
           </div>
         </article>
       </div>
+      <div className="pb-20"></div>
     </div>
   );
 }
