@@ -3,6 +3,7 @@ import Home from "./pages/Home";
 import SimpleBlogList from "./pages/SimpleBlogList";
 import SimpleBlogDetails from "./pages/SimpleBlogDetails";
 import DevPage from "./pages/DevPage";
+import TestSanity from "./pages/TestSanity";
 
 import { Link } from "react-router-dom";
 
@@ -37,6 +38,7 @@ export default function App() {
       <SimpleNavbar />
       <Routes>
         <Route path="/" element={<SimpleBlogList />} />
+        <Route path="/test" element={<TestSanity />} />
         <Route path="/blog/:slug" element={<SimpleBlogDetails />} />
       </Routes>
     </BrowserRouter>
