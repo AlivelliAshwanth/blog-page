@@ -31,6 +31,7 @@ function SimpleNavbar() {
 }
 
 export default function App() {
+  // Updated: Reduced section sizes for compact layout
   return (
     <BrowserRouter>
       <SimpleNavbar />
