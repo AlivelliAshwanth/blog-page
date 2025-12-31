@@ -128,11 +128,14 @@ export default function SimpleBlogList() {
       
       setDebugInfo(`Token: ${hasToken ? '✅ Found' : '❌ Missing'} (${tokenPreview})\nTesting connection...`);
       
-      const basicQuery = `*[_type == "post"]{ _id }`;
+      const basicQuery = `*[_type == "post"]{ _id, title, _rev }`;
       const basicResult = await client.fetch(basicQuery);
       
       const publishedQuery = `*[_type == "post" && !(_id in path("drafts.**"))]{ _id, title, publishedAt }`;
       const publishedResult = await client.fetch(publishedQuery);
+      
+      const draftQuery = `*[_type == "post" && _id in path("drafts.**")]{ _id, title }`;
+      const draftResult = await client.fetch(draftQuery);
       
       setDebugInfo(`✅ Connection successful!\nToken: ${hasToken ? '✅ Found' : '❌ Missing'} (${tokenPreview})\n\nTotal posts: ${basicResult.length}\nPublished posts: ${publishedResult.length}\n\nPublished posts:\n${JSON.stringify(publishedResult, null, 2)}\n\n${publishedResult.length === 0 ? '⚠️ No published posts found! Make sure to publish your posts in Sanity Studio.' : ''}`);
     } catch (error) {
@@ -151,7 +154,7 @@ export default function SimpleBlogList() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const query = `*[_type == "post" && !(_id in path("drafts.**"))] | order(publishedAt desc) {
+        const query = `*[_type == "post"] | order(publishedAt desc) {
           _id,
           title,
           slug,
