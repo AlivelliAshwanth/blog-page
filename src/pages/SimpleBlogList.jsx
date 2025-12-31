@@ -120,6 +120,10 @@ export default function SimpleBlogList() {
   const [showEmails, setShowEmails] = useState(false);
   const [debugInfo, setDebugInfo] = useState('');
   
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+  
   const testSanityConnection = async () => {
     try {
       const hasToken = !!process.env.REACT_APP_SANITY_TOKEN;

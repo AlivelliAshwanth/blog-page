@@ -581,6 +581,14 @@ export default function SimpleBlogDetails() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     const fetchPost = async () => {
       try {
         const query = `*[_type == "post" && slug.current == $slug][0] {
