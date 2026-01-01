@@ -173,8 +173,8 @@ export default function SimpleBlogList() {
         const publishedPosts = await client.fetch(`*[_type == "post" && !(_id in path("drafts.**"))]{_id, title, slug}`);
         console.log('Published posts only:', publishedPosts);
         
-        // Use the main query
-        const query = `*[_type == "post"] | order(publishedAt desc) {
+        // Simplified query without complex fields
+        const query = `*[_type == "post"] {
           _id,
           title,
           slug,
@@ -184,18 +184,11 @@ export default function SimpleBlogList() {
           author,
           tags,
           featured,
-          publishedAt,
-          mainImage{
-            asset->{
-              _id,
-              url
-            },
-            alt
-          }
+          publishedAt
         }`;
         
         const data = await client.fetch(query);
-        console.log('Final query result:', data);
+        console.log('Simplified query result:', data);
         console.log('=== END DEBUG ===');
         
         // Always use Sanity data if available, fallback to sample
