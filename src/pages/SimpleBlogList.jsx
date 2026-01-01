@@ -251,20 +251,20 @@ export default function SimpleBlogList() {
   return (
     <div className="min-h-screen bg-white text-gray-900">
       {/* Animated Hero Section */}
-      <div className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-8 overflow-hidden">
+      <div className="relative bg-gradient-to-br from-blue-50 via-white to-cyan-50 py-16 overflow-hidden">
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-0">
             <div className="inline-block">
-              <span className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-6 py-2 rounded-full text-sm font-bold uppercase tracking-wider">
+              <span className="bg-gradient-to-r from-blue-600 to-cyan-600 text-white px-8 py-3 rounded-full text-base font-bold uppercase tracking-wider">
                 AI & CYBERSECURITY INSIGHTS
               </span>
             </div>
-            <h1 className="text-3xl md:text-4xl font-black mb-4 leading-none mt-3">
+            <h1 className="text-4xl md:text-5xl font-black mb-6 leading-none mt-6">
               <span className="text-gray-900 block">CYGNENOIR CYBER</span>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 via-purple-600 to-cyan-600 animate-gradient-x" style={{color: '#007bff'}}>BLOGS</span>
             </h1>
-            <p className="text-base text-gray-600 max-w-3xl mx-auto leading-relaxed mb-6">
+            <p className="text-lg text-gray-600 max-w-4xl mx-auto leading-relaxed mb-8">
               Cutting-edge AI & Cybersecurity intelligence, threat analysis, and expert insights to keep your organization secure in an evolving digital landscape.
             </p>
             
