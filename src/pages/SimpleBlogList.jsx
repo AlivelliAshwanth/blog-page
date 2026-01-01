@@ -189,24 +189,16 @@ export default function SimpleBlogList() {
         console.log('Simplified query result:', data);
         console.log('=== END DEBUG ===');
         
-        // Always use Sanity data if available, fallback to sample
-        if (data && data.length > 0) {
-          console.log('✅ Using Sanity data - Found', data.length, 'posts');
-          setPosts(data);
-          setFilteredPosts(data);
-          setUseSample(false);
-        } else {
-          console.log('📝 No Sanity posts found, using sample posts');
-          setPosts(samplePosts);
-          setFilteredPosts(samplePosts);
-          setUseSample(true);
-        }
+        // Force using only Sanity data - no samples
+        console.log('✅ Sanity data found:', data?.length || 0, 'posts');
+        setPosts(data || []);
+        setFilteredPosts(data || []);
+        setUseSample(false);
       } catch (error) {
-        console.error('❌ Error fetching posts from Sanity:', error);
-        console.log('📝 Using sample posts due to error');
-        setPosts(samplePosts);
-        setFilteredPosts(samplePosts);
-        setUseSample(true);
+        console.error('❌ Sanity error:', error);
+        setPosts([]);
+        setFilteredPosts([]);
+        setUseSample(false);
       } finally {
         setLoading(false);
       }
