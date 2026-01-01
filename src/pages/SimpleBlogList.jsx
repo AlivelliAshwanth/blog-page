@@ -158,6 +158,22 @@ export default function SimpleBlogList() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        // Try multiple queries to find your posts
+        console.log('=== SANITY DEBUG ===');
+        
+        // Query 1: All documents
+        const allDocs = await client.fetch(`*[]{_type, _id}`);
+        console.log('All documents:', allDocs);
+        
+        // Query 2: All post documents (including drafts)
+        const allPosts = await client.fetch(`*[_type == "post"]{_id, title, slug}`);
+        console.log('All posts (including drafts):', allPosts);
+        
+        // Query 3: Published posts only
+        const publishedPosts = await client.fetch(`*[_type == "post" && !(_id in path("drafts.**"))]{_id, title, slug}`);
+        console.log('Published posts only:', publishedPosts);
+        
+        // Use the main query
         const query = `*[_type == "post"] | order(publishedAt desc) {
           _id,
           title,
@@ -178,9 +194,9 @@ export default function SimpleBlogList() {
           }
         }`;
         
-        console.log('Fetching posts from Sanity...');
         const data = await client.fetch(query);
-        console.log('Sanity response:', data);
+        console.log('Final query result:', data);
+        console.log('=== END DEBUG ===');
         
         // Always use Sanity data - no fallback
         console.log('✅ Using Sanity data - Found', data?.length || 0, 'posts');
