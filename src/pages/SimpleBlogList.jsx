@@ -159,17 +159,21 @@ export default function SimpleBlogList() {
     const fetchPosts = async () => {
       try {
         // Test basic connection first
-        console.log('Testing basic Sanity connection...');
-        const basicTest = await client.fetch(`*[0..2]`);
+        console.log('=== SANITY CONNECTION TEST ===');
+        console.log('Environment:', typeof window !== 'undefined' ? 'browser' : 'server');
+        console.log('Timestamp:', new Date().toISOString());
+        
+        // Test 1: Basic connection
+        const basicTest = await client.fetch(`*[0..2]{_type, _id}`);
         console.log('Basic connection test:', basicTest);
         
-        // Test specific document types
-        const docTypes = await client.fetch(`*[]{_type} | order(_type) | {"type": _type}`);
-        console.log('Document types in project:', docTypes);
-        
-        // Count posts
+        // Test 2: Count all posts
         const postCount = await client.fetch(`count(*[_type == "post"])`);
-        console.log('Total post count:', postCount);
+        console.log('Total posts in Sanity:', postCount);
+        
+        // Test 3: Get all posts with minimal data
+        const allPosts = await client.fetch(`*[_type == "post"]{_id, title, publishedAt}`);
+        console.log('All posts found:', allPosts);
         
         // Simplified query without complex fields - only published posts
         const query = `*[_type == "post" && !(_id in path("drafts.**"))] {
