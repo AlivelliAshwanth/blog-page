@@ -158,20 +158,18 @@ export default function SimpleBlogList() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // Try multiple queries to find your posts
-        console.log('=== SANITY DEBUG ===');
+        // Test basic connection first
+        console.log('Testing basic Sanity connection...');
+        const basicTest = await client.fetch(`*[0..2]`);
+        console.log('Basic connection test:', basicTest);
         
-        // Query 1: All documents
-        const allDocs = await client.fetch(`*[]{_type, _id}`);
-        console.log('All documents:', allDocs);
+        // Test specific document types
+        const docTypes = await client.fetch(`*[]{_type} | order(_type) | {"type": _type}`);
+        console.log('Document types in project:', docTypes);
         
-        // Query 2: All post documents (including drafts)
-        const allPosts = await client.fetch(`*[_type == "post"]{_id, title, slug}`);
-        console.log('All posts (including drafts):', allPosts);
-        
-        // Query 3: Published posts only
-        const publishedPosts = await client.fetch(`*[_type == "post" && !(_id in path("drafts.**"))]{_id, title, slug}`);
-        console.log('Published posts only:', publishedPosts);
+        // Count posts
+        const postCount = await client.fetch(`count(*[_type == "post"])`);
+        console.log('Total post count:', postCount);
         
         // Simplified query without complex fields
         const query = `*[_type == "post"] {
