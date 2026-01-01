@@ -591,7 +591,7 @@ export default function SimpleBlogDetails() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const query = `*[_type == "post" && slug.current == $slug][0] {
+        const query = `*[_type == "post" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
           _id,
           title,
           body,

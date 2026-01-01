@@ -171,8 +171,8 @@ export default function SimpleBlogList() {
         const postCount = await client.fetch(`count(*[_type == "post"])`);
         console.log('Total post count:', postCount);
         
-        // Simplified query without complex fields
-        const query = `*[_type == "post"] {
+        // Simplified query without complex fields - only published posts
+        const query = `*[_type == "post" && !(_id in path("drafts.**"))] {
           _id,
           title,
           slug,
