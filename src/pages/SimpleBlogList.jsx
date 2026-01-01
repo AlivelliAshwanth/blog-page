@@ -182,24 +182,16 @@ export default function SimpleBlogList() {
         const data = await client.fetch(query);
         console.log('Sanity response:', data);
         
-        // Use Sanity data if available, otherwise use sample posts
-        if (data && data.length > 0) {
-          console.log('✅ Using Sanity data - Found', data.length, 'posts');
-          setPosts(data);
-          setFilteredPosts(data);
-          setUseSample(false);
-        } else {
-          console.log('📝 Using sample posts - No Sanity posts found');
-          setPosts(samplePosts);
-          setFilteredPosts(samplePosts);
-          setUseSample(true);
-        }
+        // Always use Sanity data - no fallback
+        console.log('✅ Using Sanity data - Found', data?.length || 0, 'posts');
+        setPosts(data || []);
+        setFilteredPosts(data || []);
+        setUseSample(false);
       } catch (error) {
         console.error('❌ Error fetching posts from Sanity:', error);
-        console.log('📝 Using sample posts due to error');
-        setPosts(samplePosts);
-        setFilteredPosts(samplePosts);
-        setUseSample(true);
+        setPosts([]);
+        setFilteredPosts([]);
+        setUseSample(false);
       } finally {
         setLoading(false);
       }
@@ -330,6 +322,17 @@ export default function SimpleBlogList() {
 
       {/* Blog Content */}
       <div className="container mx-auto px-6">
+        {/* No Posts Message */}
+        {posts.length === 0 && !loading && (
+          <div className="text-center py-20">
+            <div className="text-6xl mb-6">📝</div>
+            <h2 className="text-4xl font-black text-gray-900 mb-6">NO POSTS FOUND</h2>
+            <p className="text-gray-600 text-xl mb-8">
+              Check browser console for Sanity connection details or visit /test page.
+            </p>
+          </div>
+        )}
+
         {/* Latest Article */}
         {posts.length > 0 && (
           <div className="mb-12">
