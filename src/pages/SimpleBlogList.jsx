@@ -212,10 +212,29 @@ export default function SimpleBlogList() {
         }
       } catch (error) {
         console.error('❌ Sanity error:', error);
-        console.log('📝 Using sample posts due to error');
-        setPosts(samplePosts);
-        setFilteredPosts(samplePosts);
-        setUseSample(true);
+        // Force using your posts even on error
+        if (prodPosts && prodPosts.length > 0) {
+          const yourPosts = prodPosts.map((post, index) => ({
+            _id: post._id,
+            title: post.title,
+            slug: { current: post._id },
+            excerpt: `This is an excerpt for ${post.title}`,
+            category: 'Cybersecurity',
+            readTime: '5 min read',
+            author: 'Cygne Noir Team',
+            tags: ['AI', 'Security'],
+            featured: index === 0,
+            publishedAt: new Date().toISOString()
+          }));
+          console.log('✅ FORCING your posts on error:', yourPosts);
+          setPosts(yourPosts);
+          setFilteredPosts(yourPosts);
+          setUseSample(false);
+        } else {
+          setPosts([]);
+          setFilteredPosts([]);
+          setUseSample(false);
+        }
       } finally {
         setLoading(false);
       }
