@@ -175,8 +175,8 @@ export default function SimpleBlogList() {
         const allPosts = await client.fetch(`*[_type == "post"]{_id, title, publishedAt}`);
         console.log('All posts found:', allPosts);
         
-        // Simplified query without complex fields - only published posts
-        const query = `*[_type == "post" && !(_id in path("drafts.**"))] {
+        // Simplified query - include ALL posts (published and drafts)
+        const query = `*[_type == "post"] {
           _id,
           title,
           slug,
@@ -190,7 +190,7 @@ export default function SimpleBlogList() {
         }`;
         
         const data = await client.fetch(query);
-        console.log('Simplified query result:', data);
+        console.log('All posts (including drafts):', data);
         console.log('=== END DEBUG ===');
         
         // Only use Sanity data - no samples
