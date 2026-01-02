@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { client } from '../sanityClient';
+import { createClient } from '@sanity/client';
 
 const samplePosts = [
   {
@@ -158,22 +159,32 @@ export default function SimpleBlogList() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        // Test basic connection first
-        console.log('=== SANITY CONNECTION TEST ===');
-        console.log('Environment:', typeof window !== 'undefined' ? 'browser' : 'server');
-        console.log('Timestamp:', new Date().toISOString());
+        // Test both datasets to find your posts
+        console.log('=== TESTING BOTH DATASETS ===');
         
-        // Test 1: Basic connection
-        const basicTest = await client.fetch(`*[0..2]{_type, _id}`);
-        console.log('Basic connection test:', basicTest);
+        // Test production dataset
+        const prodClient = createClient({
+          projectId: 'x9c1zj30',
+          dataset: 'production',
+          useCdn: false,
+          apiVersion: '2021-10-21',
+          token: 'skclw7xGg0GYqcsnlKdUblbW0DhH3IDLatvOF5x4InjAZsWXLIA3119Vg0SCu7UFZW79jMmTBM4fE5v67RrYIRci6wKQXDXrzyf1SFYYX54uUXNTJKxSfGdJFciyxxKsFjjnqGLyEqY76FxTtIWzEwykEaGHfIkfaZchkk5OAbauflSteB2K'
+        });
         
-        // Test 2: Count all posts
-        const postCount = await client.fetch(`count(*[_type == "post"])`);
-        console.log('Total posts in Sanity:', postCount);
+        const prodPosts = await prodClient.fetch(`*[_type == "post"]{_id, title}`);
+        console.log('Production dataset posts:', prodPosts);
         
-        // Test 3: Get all posts with minimal data
-        const allPosts = await client.fetch(`*[_type == "post"]{_id, title, publishedAt}`);
-        console.log('All posts found:', allPosts);
+        // Test development dataset
+        const devClient = createClient({
+          projectId: 'x9c1zj30',
+          dataset: 'development',
+          useCdn: false,
+          apiVersion: '2021-10-21',
+          token: 'skclw7xGg0GYqcsnlKdUblbW0DhH3IDLatvOF5x4InjAZsWXLIA3119Vg0SCu7UFZW79jMmTBM4fE5v67RrYIRci6wKQXDXrzyf1SFYYX54uUXNTJKxSfGdJFciyxxKsFjjnqGLyEqY76FxTtIWzEwykEaGHfIkfaZchkk5OAbauflSteB2K'
+        });
+        
+        const devPosts = await devClient.fetch(`*[_type == "post"]{_id, title}`);
+        console.log('Development dataset posts:', devPosts);
         
         // Simplified query - include ALL posts (published and drafts)
         const query = `*[_type == "post"] {
