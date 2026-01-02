@@ -158,11 +158,10 @@ export default function SimpleBlogList() {
 
   useEffect(() => {
     const fetchPosts = async () => {
+      let prodPosts = [];
+      
       try {
-        // Test both datasets to find your posts
-        console.log('=== TESTING BOTH DATASETS ===');
-        
-        // Test production dataset
+        // Use production dataset only
         const prodClient = createClient({
           projectId: 'x9c1zj30',
           dataset: 'production',
@@ -171,49 +170,10 @@ export default function SimpleBlogList() {
           token: 'skclw7xGg0GYqcsnlKdUblbW0DhH3IDLatvOF5x4InjAZsWXLIA3119Vg0SCu7UFZW79jMmTBM4fE5v67RrYIRci6wKQXDXrzyf1SFYYX54uUXNTJKxSfGdJFciyxxKsFjjnqGLyEqY76FxTtIWzEwykEaGHfIkfaZchkk5OAbauflSteB2K'
         });
         
-        const prodPosts = await prodClient.fetch(`*[_type == "post"]{_id, title}`);
-        console.log('Production dataset posts:', prodPosts);
-        
-        // Test development dataset
-        const devClient = createClient({
-          projectId: 'x9c1zj30',
-          dataset: 'development',
-          useCdn: false,
-          apiVersion: '2021-10-21',
-          token: 'skclw7xGg0GYqcsnlKdUblbW0DhH3IDLatvOF5x4InjAZsWXLIA3119Vg0SCu7UFZW79jMmTBM4fE5v67RrYIRci6wKQXDXrzyf1SFYYX54uUXNTJKxSfGdJFciyxxKsFjjnqGLyEqY76FxTtIWzEwykEaGHfIkfaZchkk5OAbauflSteB2K'
-        });
-        
-        const devPosts = await devClient.fetch(`*[_type == "post"]{_id, title}`);
-        console.log('Development dataset posts:', devPosts);
-        
-        // Force using your basic posts data
-        console.log('Found prodPosts:', prodPosts);
+        prodPosts = await prodClient.fetch(`*[_type == "post"]{_id, title}`);
+        console.log('Found Sanity posts:', prodPosts);
         
         if (prodPosts.length > 0) {
-          // Use your posts with minimal required data
-          const yourPosts = prodPosts.map((post, index) => ({
-            _id: post._id,
-            title: post.title,
-            slug: { current: post._id }, // Use ID as slug
-            excerpt: `This is an excerpt for ${post.title}`,
-            category: 'Cybersecurity',
-            readTime: '5 min read',
-            author: 'Cygne Noir Team',
-            tags: ['AI', 'Security'],
-            featured: index === 0,
-            publishedAt: new Date().toISOString()
-          }));
-          
-          console.log('✅ FORCING your posts:', yourPosts);
-          setPosts(yourPosts);
-          setFilteredPosts(yourPosts);
-          setUseSample(false);
-          return; // Exit early
-        }
-      } catch (error) {
-        console.error('❌ Sanity error:', error);
-        // Force using your posts even on error
-        if (prodPosts && prodPosts.length > 0) {
           const yourPosts = prodPosts.map((post, index) => ({
             _id: post._id,
             title: post.title,
@@ -226,18 +186,24 @@ export default function SimpleBlogList() {
             featured: index === 0,
             publishedAt: new Date().toISOString()
           }));
-          console.log('✅ FORCING your posts on error:', yourPosts);
+          
           setPosts(yourPosts);
           setFilteredPosts(yourPosts);
           setUseSample(false);
-        } else {
-          setPosts([]);
-          setFilteredPosts([]);
-          setUseSample(false);
+          setLoading(false);
+          return;
         }
-      } finally {
-        setLoading(false);
+      } catch (error) {
+        console.error('Sanity error:', error);
       }
+      
+      // Fallback - only use sample posts if absolutely no posts found
+      if (prodPosts.length === 0) {
+        setPosts(samplePosts);
+        setFilteredPosts(samplePosts);
+        setUseSample(true);
+      }
+      setLoading(false);
     };
 
     fetchPosts();
