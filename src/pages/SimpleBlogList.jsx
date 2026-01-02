@@ -186,8 +186,8 @@ export default function SimpleBlogList() {
         const devPosts = await devClient.fetch(`*[_type == "post"]{_id, title}`);
         console.log('Development dataset posts:', devPosts);
         
-        // Simplified query - include ALL posts (published and drafts)
-        const query = `*[_type == "post"] {
+        // Use production dataset with your actual posts
+        const data = prodPosts.length > 0 ? await prodClient.fetch(`*[_type == "post"] {
           _id,
           title,
           slug,
@@ -198,10 +198,9 @@ export default function SimpleBlogList() {
           tags,
           featured,
           publishedAt
-        }`;
+        }`) : [];
         
-        const data = await client.fetch(query);
-        console.log('All posts (including drafts):', data);
+        console.log('Your actual posts:', data);
         console.log('=== END DEBUG ===');
         
         // Use Sanity data if available, fallback to sample posts
