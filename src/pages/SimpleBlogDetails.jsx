@@ -591,7 +591,8 @@ export default function SimpleBlogDetails() {
   useEffect(() => {
     const fetchPost = async () => {
       try {
-        const query = `*[_type == "post" && slug.current == $slug && !(_id in path("drafts.**"))][0] {
+        // First try to fetch by ID (since we're using ID as slug)
+        const queryById = `*[_type == "post" && _id == $slug][0] {
           _id,
           title,
           body,
@@ -610,7 +611,33 @@ export default function SimpleBlogDetails() {
             alt
           }
         }`;
-        const data = await client.fetch(query, { slug });
+        
+        let data = await client.fetch(queryById, { slug });
+        
+        // If not found by ID, try by slug
+        if (!data) {
+          const queryBySlug = `*[_type == "post" && slug.current == $slug][0] {
+            _id,
+            title,
+            body,
+            excerpt,
+            category,
+            readTime,
+            author,
+            tags,
+            featured,
+            publishedAt,
+            mainImage{
+              asset->{
+                _id,
+                url
+              },
+              alt
+            }
+          }`;
+          data = await client.fetch(queryBySlug, { slug });
+        }
+        
         if (data) {
           setPost(data);
         } else {
