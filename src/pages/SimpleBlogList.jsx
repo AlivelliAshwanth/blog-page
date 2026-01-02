@@ -193,16 +193,24 @@ export default function SimpleBlogList() {
         console.log('All posts (including drafts):', data);
         console.log('=== END DEBUG ===');
         
-        // Only use Sanity data - no samples
-        console.log('✅ Sanity data found:', data?.length || 0, 'posts');
-        setPosts(data || []);
-        setFilteredPosts(data || []);
-        setUseSample(false);
+        // Use Sanity data if available, fallback to sample posts
+        if (data && data.length > 0) {
+          console.log('✅ Using Sanity data - Found', data.length, 'posts');
+          setPosts(data);
+          setFilteredPosts(data);
+          setUseSample(false);
+        } else {
+          console.log('📝 No Sanity posts found, using sample posts');
+          setPosts(samplePosts);
+          setFilteredPosts(samplePosts);
+          setUseSample(true);
+        }
       } catch (error) {
         console.error('❌ Sanity error:', error);
-        setPosts([]);
-        setFilteredPosts([]);
-        setUseSample(false);
+        console.log('📝 Using sample posts due to error');
+        setPosts(samplePosts);
+        setFilteredPosts(samplePosts);
+        setUseSample(true);
       } finally {
         setLoading(false);
       }
