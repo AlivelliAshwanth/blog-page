@@ -186,46 +186,29 @@ export default function SimpleBlogList() {
         const devPosts = await devClient.fetch(`*[_type == "post"]{_id, title}`);
         console.log('Development dataset posts:', devPosts);
         
-        // Use production dataset with your actual posts
-        const data = prodPosts.length > 0 ? await prodClient.fetch(`*[_type == "post"] {
-          _id,
-          title,
-          slug,
-          excerpt,
-          category,
-          readTime,
-          author,
-          tags,
-          featured,
-          publishedAt
-        }`) : [];
+        // Force using your basic posts data
+        console.log('Found prodPosts:', prodPosts);
         
-        console.log('Your actual posts:', data);
-        console.log('=== END DEBUG ===');
-        
-        // Force using your posts with default values for missing fields
         if (prodPosts.length > 0) {
-          const yourPosts = prodPosts.map(post => ({
+          // Use your posts with minimal required data
+          const yourPosts = prodPosts.map((post, index) => ({
             _id: post._id,
-            title: post.title || 'Untitled',
-            slug: { current: post.slug?.current || post._id },
-            excerpt: post.excerpt || 'No excerpt available',
-            category: post.category || 'General',
-            readTime: post.readTime || '5 min read',
-            author: post.author || 'Anonymous',
-            tags: post.tags || ['Blog'],
-            featured: post.featured || false,
-            publishedAt: post.publishedAt || new Date().toISOString()
+            title: post.title,
+            slug: { current: post._id }, // Use ID as slug
+            excerpt: `This is an excerpt for ${post.title}`,
+            category: 'Cybersecurity',
+            readTime: '5 min read',
+            author: 'Cygne Noir Team',
+            tags: ['AI', 'Security'],
+            featured: index === 0,
+            publishedAt: new Date().toISOString()
           }));
-          console.log('✅ Using your posts:', yourPosts);
+          
+          console.log('✅ FORCING your posts:', yourPosts);
           setPosts(yourPosts);
           setFilteredPosts(yourPosts);
           setUseSample(false);
-        } else {
-          console.log('📝 No posts found, using sample posts');
-          setPosts(samplePosts);
-          setFilteredPosts(samplePosts);
-          setUseSample(true);
+          return; // Exit early
         }
       } catch (error) {
         console.error('❌ Sanity error:', error);
