@@ -203,14 +203,26 @@ export default function SimpleBlogList() {
         console.log('Your actual posts:', data);
         console.log('=== END DEBUG ===');
         
-        // Use Sanity data if available, fallback to sample posts
-        if (data && data.length > 0) {
-          console.log('✅ Using Sanity data - Found', data.length, 'posts');
-          setPosts(data);
-          setFilteredPosts(data);
+        // Force using your posts with default values for missing fields
+        if (prodPosts.length > 0) {
+          const yourPosts = prodPosts.map(post => ({
+            _id: post._id,
+            title: post.title || 'Untitled',
+            slug: { current: post.slug?.current || post._id },
+            excerpt: post.excerpt || 'No excerpt available',
+            category: post.category || 'General',
+            readTime: post.readTime || '5 min read',
+            author: post.author || 'Anonymous',
+            tags: post.tags || ['Blog'],
+            featured: post.featured || false,
+            publishedAt: post.publishedAt || new Date().toISOString()
+          }));
+          console.log('✅ Using your posts:', yourPosts);
+          setPosts(yourPosts);
+          setFilteredPosts(yourPosts);
           setUseSample(false);
         } else {
-          console.log('📝 No Sanity posts found, using sample posts');
+          console.log('📝 No posts found, using sample posts');
           setPosts(samplePosts);
           setFilteredPosts(samplePosts);
           setUseSample(true);
