@@ -170,7 +170,24 @@ export default function SimpleBlogList() {
           token: 'skclw7xGg0GYqcsnlKdUblbW0DhH3IDLatvOF5x4InjAZsWXLIA3119Vg0SCu7UFZW79jMmTBM4fE5v67RrYIRci6wKQXDXrzyf1SFYYX54uUXNTJKxSfGdJFciyxxKsFjjnqGLyEqY76FxTtIWzEwykEaGHfIkfaZchkk5OAbauflSteB2K'
         });
         
-        prodPosts = await prodClient.fetch(`*[_type == "post"]{_id, title}`);
+        prodPosts = await prodClient.fetch(`*[_type == "post"]{
+          _id,
+          title,
+          excerpt,
+          category,
+          readTime,
+          author,
+          tags,
+          featured,
+          publishedAt,
+          mainImage{
+            asset->{
+              _id,
+              url
+            },
+            alt
+          }
+        }`);
         console.log('Found Sanity posts:', prodPosts);
         
         if (prodPosts.length > 0) {
@@ -178,13 +195,14 @@ export default function SimpleBlogList() {
             _id: post._id,
             title: post.title,
             slug: { current: post._id },
-            excerpt: `This is an excerpt for ${post.title}`,
-            category: 'Cybersecurity',
-            readTime: '5 min read',
-            author: 'Cygne Noir Team',
-            tags: ['AI', 'Security'],
-            featured: index === 0,
-            publishedAt: new Date().toISOString()
+            excerpt: post.excerpt || `This is an excerpt for ${post.title}`,
+            category: post.category || 'Cybersecurity',
+            readTime: post.readTime || '5 min read',
+            author: post.author || 'Cygne Noir Team',
+            tags: post.tags || ['AI', 'Security'],
+            featured: post.featured || index === 0,
+            publishedAt: post.publishedAt || new Date().toISOString(),
+            mainImage: post.mainImage
           }));
           
           setPosts(yourPosts);
